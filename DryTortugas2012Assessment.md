@@ -6,40 +6,9 @@ September 19, 2017
 Dry Tortugas 2012
 -----------------
 
+This notebook was created in response to a current iOBIS data harvest in which the Dry Tortugas 2012 dataset seems to have errors. The data used were downloaded from <https://www1.usgs.gov/obis-usa/ipt/resource?r=drytortugasreefvisualcensus2012>.
+
 I'm working against the DwC-A for the Dry Tortugas 2012 dataset and I'm not seeing the missing eventIDs. Here are some examples.
-
-import data from DwC-A
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_character(),
-    ##   modified = col_date(format = ""),
-    ##   eventDate = col_date(format = ""),
-    ##   year = col_integer(),
-    ##   month = col_integer(),
-    ##   day = col_integer(),
-    ##   minimumElevationInMeters = col_integer(),
-    ##   maximumElevationInMeters = col_integer(),
-    ##   minimumDepthInMeters = col_double(),
-    ##   maximumDepthInMeters = col_double(),
-    ##   decimalLatitude = col_double(),
-    ##   decimalLongitude = col_double()
-    ## )
-
-    ## See spec(...) for full column specifications.
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_character(),
-    ##   eventDate = col_date(format = ""),
-    ##   year = col_integer(),
-    ##   month = col_integer(),
-    ##   day = col_integer(),
-    ##   decimalLatitude = col_double(),
-    ##   decimalLongitude = col_double()
-    ## )
-
-    ## See spec(...) for full column specifications.
 
 Here is the event file, note no missing eventIDs
 

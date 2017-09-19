@@ -2,7 +2,10 @@
 title: "DryTortugas2012"
 author: "Abby Benson"
 date: "September 19, 2017"
-output: html_notebook
+output:
+  github_document: default
+  html_notebook: default
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -10,11 +13,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Dry Tortugas 2012
+This notebook was created in response to a current iOBIS data harvest in which the Dry Tortugas 2012 dataset seems to have errors. The data used were downloaded from https://www1.usgs.gov/obis-usa/ipt/resource?r=drytortugasreefvisualcensus2012. 
 
 I'm working against the DwC-A for the Dry Tortugas 2012 dataset and I'm not seeing the missing eventIDs. Here are some examples.
 
-import data from DwC-A
-```{r echo=FALSE}
+```{r include=FALSE}
 library(readr)
 event <- read_delim("~/OBIS/MBONs/Marine Sanctuaries/MBONMarineSanctuaries/ReefVisualCensus/2012DryTortugas/dwca-drytortugasreefvisualcensus2012-v1.3/event.txt",
 "\t", escape_double = FALSE, trim_ws = TRUE)
