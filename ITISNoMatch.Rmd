@@ -1,0 +1,223 @@
+---
+title: "SGCN Names with No ITIS Match"
+author: "Abby Benson"
+date: "September 19, 2017"
+output:
+  github_document: default
+  html_notebook: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(httr)
+httr::set_config( config( ssl_verifypeer = 0L ) )
+```
+
+# Scientific Name Matching Process
+
+For this process, scientific names are collected from the 56 States and U.S. Territories that have been identified as the Species of Greatest Conservation Need (SGCN) for that State or Territory. Once the scientific names are collated they are added to the Taxa Information Registry and the ITIS processor is run. The ITIS processor first looks for an exact match on the scientific name, if one is not found then a fuzzy match is run using a 0.5 level. This process was run on both the 2005 and 2015 SGCN names. All of the data in this notebook comes from the Biogeographic Characterization Branch's data distillery. This analysis is currently missing nine of the 56 SGCN lists.
+
+```{r data import}
+library(jsonlite)
+library(dplyr)
+data <- fromJSON("https://gc2.datadistillery.org/api/v1/sql/bcb?q=SELECT%20*%20FROM%20sgcn.sgcn_statelists%20WHERE%20matchmethod=%27Not%20Matched%27")
+noITISmatch <- as_tibble(data$features$properties)
+```
+
+
+## 2015 SGCN Unmatched Names
+
+```{r 2015 SGCN}
+
+sgcn2015 <- noITISmatch[which(noITISmatch$sgcn2015 == 1),]
+sgcn2015grouped = sgcn2015 %>%
+  group_by(taxonomicgroup, scientificname, commonname) %>%
+  summarize(
+    n   = n())
+```
+
+### Amphibians
+```{r Amphibians2015}
+Amphibians2015 <- sgcn2015grouped[which(sgcn2015grouped == "Amphibians"),] %>%
+  arrange(desc(n))
+Amphibians2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Arachnids
+```{r Arachnids2015, echo=FALSE}
+Arachnids2015 <- sgcn2015grouped[which(sgcn2015grouped == "Arachnids"),] %>%
+  arrange(desc(n))
+Arachnids2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Birds
+```{r Birds2015, echo=FALSE}
+Birds2015 <- sgcn2015grouped[which(sgcn2015grouped == "Birds"),] %>%
+  arrange(desc(n))
+Birds2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Fish
+```{r Fish2015, echo=FALSE}
+Fish2015 <- sgcn2015grouped[which(sgcn2015grouped == "Fish"),] %>%
+  arrange(desc(n))
+Fish2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Insects
+```{r Insects2015, echo=FALSE}
+Insects2015 <- sgcn2015grouped[which(sgcn2015grouped == "Insects"),] %>%
+  arrange(desc(n))
+Insects2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Mammals
+```{r Mammals2015, echo=FALSE}
+Mammals2015 <- sgcn2015grouped[which(sgcn2015grouped == "Mammals"),] %>%
+  arrange(desc(n))
+Mammals2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Mollusks
+```{r Mollusks2015, echo=FALSE}
+Mollusks2015 <- sgcn2015grouped[which(sgcn2015grouped == "Mollusks"),] %>%
+  arrange(desc(n))
+Mollusks2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Other
+```{r Other2015, echo=FALSE}
+Other2015 <- sgcn2015grouped[which(sgcn2015grouped == "Other"),] %>%
+  arrange(desc(n))
+Other2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Other Invertebrates
+```{r Other Invertebrates2015, echo=FALSE}
+OtherInvertebrates2015 <- sgcn2015grouped[which(sgcn2015grouped == "Other Invertebrates"),] %>%
+  arrange(desc(n))
+OtherInvertebrates2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Plants
+```{r Plants2015, echo=FALSE}
+Plants2015 <- sgcn2015grouped[which(sgcn2015grouped == "Plants"),] %>%
+  arrange(desc(n))
+Plants2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Reptiles
+```{r Reptiles2015, echo=FALSE}
+Reptiles2015 <- sgcn2015grouped[which(sgcn2015grouped == "Reptiles"),] %>%
+  arrange(desc(n))
+Reptiles2015 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+
+## 2005 SGCN Unmatched Names
+```{r}
+sgcn2005 <- noITISmatch[which(noITISmatch$sgcn2005 == 1),]
+sgcn2005grouped = sgcn2005 %>%
+  group_by(taxonomicgroup, scientificname, commonname) %>%
+  summarize(
+    n   = n())
+```
+
+### Amphibians
+```{r Amphibians2005, echo=FALSE}
+Amphibians2005 <- sgcn2005grouped[which(sgcn2005grouped == "Amphibians"),] %>%
+  arrange(desc(n))
+Amphibians2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Arachnids
+```{r Arachnids2005, echo=FALSE}
+Arachnids2005 <- sgcn2005grouped[which(sgcn2005grouped == "Arachnids"),] %>%
+  arrange(desc(n))
+Arachnids2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Birds
+```{r Birds2005, echo=FALSE}
+Birds2005 <- sgcn2005grouped[which(sgcn2005grouped == "Birds"),] %>%
+  arrange(desc(n))
+Birds2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Fish
+```{r Fish2005, echo=FALSE}
+Fish2005 <- sgcn2005grouped[which(sgcn2005grouped == "Fish"),] %>%
+  arrange(desc(n))
+Fish2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Insects
+```{r Insects2005, echo=FALSE}
+Insects2005 <- sgcn2005grouped[which(sgcn2005grouped == "Insects"),] %>%
+  arrange(desc(n))
+Insects2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Mammals
+```{r Mammals2005, echo=FALSE}
+Mammals2005 <- sgcn2005grouped[which(sgcn2005grouped == "Mammals"),] %>%
+  arrange(desc(n))
+Mammals2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Mollusks
+```{r Mollusks2005, echo=FALSE}
+Mollusks2005 <- sgcn2005grouped[which(sgcn2005grouped == "Mollusks"),] %>%
+  arrange(desc(n))
+Mollusks2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Other
+```{r Other2005, echo=FALSE}
+Other2005 <- sgcn2005grouped[which(sgcn2005grouped == "Other"),] %>%
+  arrange(desc(n))
+Other2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Other Invertebrates
+```{r Other Invertebrates2005, echo=FALSE}
+OtherInvertebrates2005 <- sgcn2005grouped[which(sgcn2005grouped == "Other Invertebrates"),] %>%
+  arrange(desc(n))
+OtherInvertebrates2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Plants
+```{r Plants2005, echo=FALSE}
+Plants2005 <- sgcn2005grouped[which(sgcn2005grouped == "Plants"),] %>%
+  arrange(desc(n))
+Plants2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
+
+### Reptiles
+```{r Reptiles2005, echo=FALSE}
+Reptiles2005 <- sgcn2005grouped[which(sgcn2005grouped == "Reptiles"),] %>%
+  arrange(desc(n))
+Reptiles2005 %>%
+  knitr::kable(col.names = c("Taxonomic Group", "Scientific Name", "Common Name", "N"))
+```
