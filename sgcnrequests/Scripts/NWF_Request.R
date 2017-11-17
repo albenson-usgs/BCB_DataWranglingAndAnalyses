@@ -2,6 +2,7 @@ library(jsonlite)
 library(tidyverse)
 library(stringr)
 library(plyr)
+library(taxize)
 
 nl <- fromJSON("https://gc2.datadistillery.org/api/v1/sql/bcb?q=SELECT%20*%20FROM%20sgcn.sgcn_nationallist")
 nl_data <- as_tibble(nl$features$properties)
@@ -25,8 +26,6 @@ itisdata <- fromJSON("https://gc2.datadistillery.org/api/v1/sql/bcb?q=SELECT%20*
 itis_data <- as_tibble(itisdata$features$properties)
 itis_data <- itis_data[c("scientificname","itis")]
 
-### This for loop works ok but I had to keep re-running it whenever a genus or above was missing from the hierarchy. Tried a while
-### loop- didn't help. Tried repeat- didn't help.
 itis_row <- list()
 itis_data$kingdom <- NA
 itis_data$phylum <- NA
@@ -91,11 +90,59 @@ for (i in 1: nrow(worms_data)) {
 ## Merge ITIS and WoRMS data together
 worms_data$worms <- NULL
 itis_data$itis <- NULL
-
 hierarchydata <- rbind(worms_data, itis_data)
 
 ## Merge hierarchy data to dataframe with FWS listing status
 nl_fws_itis_worms <- merge(nl_w_fws, hierarchydata, by = "scientificname", all.x = T)
+
+# Find missing taxonomy
+missingtax <- nl_fws_itis_worms[which(is.na(nl_fws_itis_worms$kingdom) & nl_fws_itis_worms$matchmethod != "Legacy Match"),]
+lut_itis <- missingtax[c("scientificname")]
+
+lut_itis$id <- ""
+getid <- function(x) {
+  for (i in 1:nrow(x)) {
+    if (nchar(x[i,ncol(x)]) == 0) {
+      lut_itis[i,]$id <<- get_tsn(x[i,]$scientificname, searchtype = "scientific", ask = TRUE, verbose = TRUE)
+    }}
+}
+getid(lut_itis)
+
+lut_itis <- lut_itis[which(!is.na(lut_itis$id)),]
+
+lut_itis$kingdom <- ""
+lut_itis$phylum <- ""
+lut_itis$class <- ""
+lut_itis$order <- ""
+lut_itis$family <- ""
+lut_itis$genus <- ""
+
+for (i in 1:nrow(lut_itis)) {
+  if (nchar(lut_itis[667,4] < 1))
+    ls <- classification(lut_itis[i,]$id, db = "itis")
+  df <- ldply(ls, data.frame)
+  lut_itis[i,]$kingdom <- df$name[which(df$rank == "kingdom")]
+  lut_itis[i,]$phylum <- df$name[which(df$rank == "phylum" | df$rank == "division")]
+  if (nrow(df[which(df$rank == "class"),]) >0) { 
+    lut_itis[i,]$class <- df$name[which(df$rank == "class")]
+  } 
+  if (nrow(df[which(df$rank == "order"),]) >0) {
+    lut_itis[i,]$order <- df$name[which(df$rank == "order")]
+  } 
+  if (nrow(df[which(df$rank == "family"),]) >0) {
+    lut_itis[i,]$family <- df$name[which(df$rank == "family")]
+  } 
+  if (nrow(df[which(df$rank == "genus"),]) >0) {
+    lut_itis[i,]$genus <- df$name[which(df$rank == "genus")]
+  }
+}
+
+lut_itis$id <- NULL
+hierarchydata <- rbind(hierarchydata, lut_itis)
+nl_fws_itis_worms <- merge(nl_w_fws, hierarchydata, by = "scientificname", all.x = T)
+
+
+
 
 # Break out by FWS WSFR Regions https://wsfrprograms.fws.gov/Subpages/ContactUs/ContactUs.htm
 
@@ -134,9 +181,43 @@ wsfr8_natlist <- nl_fws_itis_worms[grep(paste(wsfr_region8,collapse = "|"),nl_fw
 wsfr8_natlist_simple <- wsfr8_natlist[c(-2:-5,-15)]
 write.csv(wsfr1_natlist_simple, file = "wsfr_region8_NationaListSubset.csv", fileEncoding = "UTF-8", row.names = FALSE)
 
-# Build a table that would count how many have a different listing status
+# Break out by AFWA regions
+neafwa <- c("Maine", "New Hampshire", "Vermont", "Massachusetts", "Connecticut", "Rhode Island", "New York", "Pennsylvania", "New Jersey", 
+            "Delaware", "Maryland", "Virginia", "West Virginia", "District of Columbia")
+seafwa <- c("Florida", "Georgia", "South Carolina", "North Carolina", "Kentucky", "Tennessee", "Alabama", "Mississippi",  "Arkansas", 
+            "Louisiana", "Virginia", "West Virginia", "Missouri", "Oklahoma", "Texas")
+mafwa <- c("Ohio", "Indiana", "Illinois", "Michigan", "Minnesota", "Wisconsin", "Iowa", "Missouri", "Kansas", "Kentucky", "Nebraska", 
+           "North Dakota", "South Dakota")
+wafwa <- c("Washington", "Oregon", "California", "Idaho", "Montana", "Nevada", "Arizona", "Utah", "Wyoming", "Colorado", "New Mexico", 
+           "Texas", "Oklahoma", "Kansas", "Nebraska", "South Dakota", "North Dakota")
+neafwa_natlist <- nl_fws_itis_worms[grep(paste(neafwa,collapse = "|"),nl_fws_itis_worms$statelist_2015),]
+neafwa_natlist_simple <- neafwa_natlist[c(-2:-5,-15)]
+write.csv(neafwa_natlist_simple, file = "neafwa_NationalListSubset.csv", fileEncoding = "UTF-8", row.names = F)
+seafwa_natlist <- nl_fws_itis_worms[grep(paste(seafwa,collapse = "|"),nl_fws_itis_worms$statelist_2015),]
+seafwa_natlist_simple <- seafwa_natlist[c(-2:-5,-15)]
+write.csv(seafwa_natlist_simple, file = "seafwa_NationalListSubset.csv", fileEncoding = "UTF-8", row.names = F)
+mafwa_natlist <- nl_fws_itis_worms[grep(paste(mafwa,collapse = "|"),nl_fws_itis_worms$statelist_2015),]
+mafwa_natlist_simple <- mafwa_natlist[c(-2:-5,-15)]
+write.csv(mafwa_natlist_simple, file = "mafwa_NationalListSubset.csv", fileEncoding = "UTF-8", row.names = F)
+wafwa_natlist <- nl_fws_itis_worms[grep(paste(wafwa,collapse = "|"),nl_fws_itis_worms$statelist_2015),]
+wafwa_natlist_simple <- wafwa_natlist[c(-2:-5,-15)]
+write.csv(wafwa_natlist_simple, file = "wafwa_NationalListSubset.csv", fileEncoding = "UTF-8", row.names = F)
+
 
 # Build a table broken down by taxa group by species only and subspecies only for each year
+
+wildlifespecies <- nl_fws_itis_worms_2015[which(nl_fws_itis_worms_2015$taxonomicrank == "Species" & nl_fws_itis_worms_2015$kingdom == "Animalia"),]
+wildlife_subspecies <- nl_fws_itis_worms_2015[which(nl_fws_itis_worms_2015$taxonomicrank == "Subspecies" & nl_fws_itis_worms_2015$kingdom == 
+                                                      "Animalia"),]
+plantspecies <- nl_fws_itis_worms_2015[which(nl_fws_itis_worms_2015$kingdom == "Plantae"),]
+
+
+# Build a table that would count how many have a different listing status
+wsp_grouped = wildlifespecies %>%
+  group_by(class) %>%
+  summarize(
+    n   = n()) %>%
+  knitr::kable(col.names = c("Number"))
 
 # Can I pull in IUCN status?
 
