@@ -213,13 +213,12 @@ plantspecies <- nl_fws_itis_worms_2015[which(nl_fws_itis_worms_2015$kingdom == "
 
 
 # Build a table that would count how many have a different listing status
-wsp_grouped = wildlifespecies %>%
-  group_by(class) %>%
-  summarize(
-    n   = n()) %>%
-  knitr::kable(col.names = c("Number"))
+fws_table <- nl_fws_itis_worms %>%
+  group_by(class, listingStatus) %>%
+  dplyr::summarize(count = n()) %>%
+  tidyr::spread(listingStatus, count)
+write.csv(fws_table, file = "NationalList_ListingStatusbyClass.csv", fileEncoding = "UTF-8", row.names = F)
 
-# Can I pull in IUCN status?
 
 
 
