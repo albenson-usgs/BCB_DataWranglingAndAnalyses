@@ -1,5 +1,6 @@
 library(readr)
 library(jsonlite)
+library(tidyverse)
 
 # Bring in species list Meryl Mims supplied via email on Nov 20, 2017 
 NFVAP_SpeciesList <- read_csv("~/BCB/MultipleSpeciesVulnerabilityNA/SpeciesLists_Nov2017_forSGCNquery.csv")
