@@ -145,8 +145,8 @@ for (i in 1: nrow(climProject_natlist_matrix)) {
   }
 }
 
-write.csv(climProject_natlist_matrix, file = "SGCN_NationalList_ClimateInterestMatrix.csv", fileEncoding = "UTF-8", row.names = F)
-write.csv(climProject_natlist_simple, file = "SGCN_NationalList_ClimateInterestNorthCentralStates_29Nov2017.csv", fileEncoding = "UTF-8", 
+write.csv(climProject_natlist_matrix, file = "SGCN_NationalList_ClimateInterestMatrix_20171129.csv", fileEncoding = "UTF-8", row.names = F)
+write.csv(climProject_natlist_simple, file = "SGCN_NationalList_ClimateInterestNorthCentralStates_20171129.csv", fileEncoding = "UTF-8", 
           row.names = F)
 
  
