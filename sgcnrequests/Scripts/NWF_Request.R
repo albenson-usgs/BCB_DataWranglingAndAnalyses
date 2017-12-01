@@ -140,6 +140,7 @@ for (i in 1:nrow(lut_itis)) {
 lut_itis$id <- NULL
 hierarchydata <- rbind(hierarchydata, lut_itis)
 nl_fws_itis_worms <- merge(nl_w_fws, hierarchydata, by = "scientificname", all.x = T)
+nl_fws_itis_worms_2015 <- nl_fws_itis_worms[which(nl_fws_itis_worms$sgcn2015 > 0),]
 
 
 
@@ -213,15 +214,23 @@ plantspecies <- nl_fws_itis_worms_2015[which(nl_fws_itis_worms_2015$kingdom == "
 
 
 # Build a table that would count how many have a different listing status
-fws_table <- nl_fws_itis_worms %>%
+fws_table <- nl_fws_itis_worms_2015 %>%
   group_by(class, listingStatus) %>%
   dplyr::summarize(count = n()) %>%
   tidyr::spread(listingStatus, count)
-write.csv(fws_table, file = "NationalList_ListingStatusbyClass.csv", fileEncoding = "UTF-8", row.names = F)
+write.csv(fws_table, file = "NationalList_ListingStatusbyClass_2015.csv", fileEncoding = "UTF-8", row.names = F)
 
+nl_fws_itis_worms_2015_simple <- nl_fws_itis_worms_2015[c("scientificname","commonname","taxonomicrank","matchmethod",
+                                                          "scientificnames_submitted","statelist_2005","statelist_2015","listingStatus",
+                                                          "kingdom","phylum","class","order","family")]
 
+write.csv(nl_fws_itis_worms_2015_simple, file = "SGCN_NationalList2015_TaxonomyListingStatus_20171130.csv", fileEncoding = "UTF-8", row.names = F)
 
-
+# How many states have at least one plant on their list?
+subset <- nl_fws_itis_worms_2015[which(nl_fws_itis_worms_2015$kingdom == "Plantae"),]
+subset <- subset[c("statelist_2015")]
+subset <- unlist(strsplit(subset$statelist_2015, split = ","))
+unique(subset)
 
 
 
