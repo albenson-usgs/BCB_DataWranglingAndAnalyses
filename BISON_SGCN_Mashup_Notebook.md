@@ -58,7 +58,7 @@ g + geom_bar(aes(fill = state), position = position_stack(reverse = TRUE), stat 
 ## Warning: Removed 8 rows containing missing values (position_stack).
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-4](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/unnamed-chunk-4-1.png)
 
 Or maybe this way
 
