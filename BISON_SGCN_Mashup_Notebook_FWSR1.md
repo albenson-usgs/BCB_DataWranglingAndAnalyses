@@ -4,7 +4,7 @@ January 17, 2018
 
 
 ```r
-# Data for this notebook was brought together and managed using the R script BISON_SGCN_Mashup.R
+# Data for this notebook was brought together and managed using the R script BISON_SGCN_Mashup_FWSRegion1.R
 ```
 
 ## General information about the data
@@ -17,7 +17,7 @@ included in this analysis.
 
 
 
-### Number of Species of Greatest Conservation Need in Fish and Wildlife Service Region 3:
+### Number of Species of Greatest Conservation Need in Fish and Wildlife Service Region 1:
 
 
 ```r
@@ -43,7 +43,29 @@ nrow(FWSRegion1_list[which(FWSRegion1_list$ListingStatus == "Candidate" | FWSReg
 ```
 
 
-### BISON Occurrence Data Available for these SGCN grouped by the Class level of the taxonomic heirarchy
+### BISON Occurrence Data Available for these SGCN grouped by the Class level of the taxonomic hierarchy
+First we'll examine what the breakdown looks like for the types of observations for these species for all observations from all locations.
+
+
+```r
+o1_1_gather <- o1_gather[which(o1_gather$class != "Aves (165)"),]
+o1_2_gather <- o1_gather[which(o1_gather$class == "Aves (165)"),]
+op1 <- ggplot(o1_1_gather, aes(class, Count))
+op1 + geom_bar(aes(fill = type), position = position_stack(reverse = TRUE), stat = "identity") +
+  coord_flip() +
+  theme(legend.position = "top") 
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+
+```r
+# op2 <- ggplot(o1_2_gather, aes(class, Count))
+# op2 + geom_bar(aes(fill = type), position = position_stack(reverse = TRUE), stat = "identity") +
+#   coord_flip() +
+#   theme(legend.position = "top") 
+```
+
+Next we'll see how this breaks down for the region of interest- FWS WSFR Region 1
 
 
 ```r
@@ -62,7 +84,20 @@ p1 <- ggplot(r1, aes(x=class, y=Total)) +
   theme(axis.title.x = element_blank()) +
   ylim(0,10000) +
   coord_flip()
+p1 <- ggplotGrob(p1)
+```
 
+```
+## Warning: Removed 4 rows containing missing values (geom_point).
+
+## Warning: Removed 4 rows containing missing values (geom_point).
+```
+
+```
+## Warning: Removed 40 rows containing missing values (geom_segment).
+```
+
+```r
 p2 <- ggplot(r1, aes(x=class, y=Total)) + 
   geom_point(stat = "identity") +
   geom_point(col="tomato2", size=3) +   # Draw points
@@ -81,7 +116,22 @@ p2 <- ggplot(r1, aes(x=class, y=Total)) +
         axis.title.x = element_blank()) +
   ylim(10001,100000) +
   coord_flip()
+p2 <- ggplotGrob(p2)
+```
 
+```
+## Warning: Removed 37 rows containing missing values (geom_point).
+```
+
+```
+## Warning: Removed 37 rows containing missing values (geom_point).
+```
+
+```
+## Warning: Removed 40 rows containing missing values (geom_segment).
+```
+
+```r
 p3 <- ggplot(r1, aes(x=class, y=Total)) + 
   geom_point(stat = "identity") +
   geom_point(col="tomato2", size=3) +   # Draw points
@@ -100,33 +150,14 @@ p3 <- ggplot(r1, aes(x=class, y=Total)) +
         axis.title.x = element_blank()) +
   ylim(100001,10000000) + 
   coord_flip()
-
-grid.arrange(p1, p2, p3, ncol=3)
-```
-
-```
-## Warning: Removed 4 rows containing missing values (geom_point).
-
-## Warning: Removed 4 rows containing missing values (geom_point).
-```
-
-```
-## Warning: Removed 40 rows containing missing values (geom_segment).
-```
-
-```
-## Warning: Removed 37 rows containing missing values (geom_point).
-
-## Warning: Removed 37 rows containing missing values (geom_point).
-```
-
-```
-## Warning: Removed 40 rows containing missing values (geom_segment).
+p3 <- ggplotGrob(p3)
 ```
 
 ```
 ## Warning: Removed 39 rows containing missing values (geom_point).
+```
 
+```
 ## Warning: Removed 39 rows containing missing values (geom_point).
 ```
 
@@ -134,7 +165,13 @@ grid.arrange(p1, p2, p3, ncol=3)
 ## Warning: Removed 40 rows containing missing values (geom_segment).
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+```r
+# grid.arrange(p1, p2, p3, ncol=3)
+g <- cbind(p1, p2, p3, size = "first")
+grid::grid.draw(g)
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 
 Two-way table shows the counts of observations for different taxonomic classes of the Species of Greatest Conservation Need in FWS WSFR
@@ -219,7 +256,7 @@ g1 + geom_bar(aes(fill = state), position = position_stack(reverse = TRUE), stat
 ## Warning: Removed 4 rows containing missing values (geom_bar).
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
 
 ```r
 # Need to figure out a better way to represent Aves for this type of figure
@@ -229,9 +266,5 @@ g1 + geom_bar(aes(fill = state), position = position_stack(reverse = TRUE), stat
 #   theme(legend.position = "top")
 
 #grid.arrange(g1, g1_2) # not working, puts the classes on the x axis and occCount on the y axis (flips things)
-
-# How should we represent class = NA?
-
-#knitr::spin('C:/Users/albenson/Documents/SWAPs/DataAnalysis/BISON_SGCN_Mashup/BISON_SGCN_Mashup_Notebook.R')
 ```
 
