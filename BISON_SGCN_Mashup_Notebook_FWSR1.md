@@ -49,7 +49,7 @@ lsp1 <- ggplot(ls_r1, aes(x=count, y=class)) + geom_point(shape=1)
 lsp1 + facet_grid(ListingStatus ~ .)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+![plot of chunk unnamed-chunk-3](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion1-ListStat.png)
 
 
 ### BISON Occurrence Data Available for these SGCN grouped by the Class level of the taxonomic hierarchy
@@ -65,7 +65,7 @@ op1 + geom_bar(aes(fill = type), position = position_stack(reverse = TRUE), stat
   theme(legend.position = "top") 
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-4](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion1-ObsType.png)
 
 ```r
 # op2 <- ggplot(o1_2_gather, aes(class, Count))
@@ -180,7 +180,7 @@ g <- cbind(p1, p2, p3, size = "first")
 grid::grid.draw(g)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![plot of chunk unnamed-chunk-5](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion1-chunk-4-1.png)
 
 
 Two-way table shows the counts of observations for different taxonomic classes of the Species of Greatest Conservation Need in FWS WSFR
@@ -265,7 +265,7 @@ g1 + geom_bar(aes(fill = state), position = position_stack(reverse = TRUE), stat
 ## Warning: Removed 4 rows containing missing values (geom_bar).
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+![plot of chunk unnamed-chunk-7](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion1-chunk-6-1.png)
 
 ```r
 # Need to figure out a better way to represent Aves for this type of figure
