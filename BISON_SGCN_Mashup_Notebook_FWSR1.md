@@ -134,7 +134,7 @@ grid.arrange(p1, p2, p3, ncol=3)
 ## Warning: Removed 40 rows containing missing values (geom_segment).
 ```
 
-![plot of chunk unnamed-chunk-4](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion1-chunk-4-1.png)
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 
 Two-way table shows the counts of observations for different taxonomic classes of the Species of Greatest Conservation Need in FWS WSFR
@@ -219,7 +219,7 @@ g1 + geom_bar(aes(fill = state), position = position_stack(reverse = TRUE), stat
 ## Warning: Removed 4 rows containing missing values (geom_bar).
 ```
 
-![plot of chunk unnamed-chunk-6](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion1-chunk-6-1.png)
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
 
 ```r
 # Need to figure out a better way to represent Aves for this type of figure
