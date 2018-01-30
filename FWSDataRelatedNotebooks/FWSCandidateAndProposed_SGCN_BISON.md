@@ -131,7 +131,7 @@ g <- cbind(p1, p2, p3, size = "first")
 grid::grid.draw(g)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+![plot of chunk unnamed-chunk-3](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/FWSDataRelatedNotebooks/CandPropOcc.png)
 
 ## Breakdown of Occurrences in BISON by FWS Region of the SGCN Species + Candidate or Proposed for Listing Species
 ### FWS Region 1 - Hawaii, Idaho, Oregon, Washington, American Samoa, Commonwealth of the Northern Mariana Islands, Guam and the Pacific Trust Territories
@@ -250,7 +250,7 @@ FWSRegion2_CPlist_tab %>%
 |              Speyeria idalia              |      Regal Fritillary       |    2181    | Under Review in the Candidate or Petition Process |
 |          Streptanthus bracteatus          |     bracted jewelflower     |     51     |                     Candidate                     |
 | Symphyotrichum puniceum var. scabricaule  |      purplestem aster       |     0      | Under Review in the Candidate or Petition Process |
-|        Tamias minimus atristriatus        |   PenÒasco least chipmunk   |     10     |                     Candidate                     |
+|        Tamias minimus atristriatus        |   Pen√±asco least chipmunk   |     10     |                     Candidate                     |
 |          Trogloglanis pattersoni          |     toothless blindcat      |     32     | Under Review in the Candidate or Petition Process |
 |             Truncilla cognata             |      Mexican fawnsfoot      |     25     | Under Review in the Candidate or Petition Process |
 |            Truncilla macrodon             |       Texas fawnsfoot       |     99     |                     Candidate                     |
@@ -777,7 +777,7 @@ FWSRegion8_CPlist_tab %>%
 |       Lavinia exilicauda chi       |               Clear Lake Hitch                |     0      | Under Review in the Candidate or Petition Process |
 | Lepidomeda mollispinis mollispinis |               Virgin Spinedace                |     13     | Under Review in the Candidate or Petition Process |
 |           Lycaena hermes           |                 Hermes Copper                 |     85     |                     Candidate                     |
-|          Microcina jungi           | Jung‚<U+0080><U+0099>s micro-blind harvestman |     1      | Under Review in the Candidate or Petition Process |
+|          Microcina jungi           | Jung√¢<U+0080><U+0099>s micro-blind harvestman |     1      | Under Review in the Candidate or Petition Process |
 |         Phacelia argentea          |              Sand dune phacelia               |    161     | Under Review in the Candidate or Petition Process |
 |        Pyrgulopsis anguina         |            Longitudinal Gland Pyrg            |     0      | Under Review in the Candidate or Petition Process |
 |       Pyrgulopsis crystalis        |              Crystal springsnail              |     18     | Under Review in the Candidate or Petition Process |
