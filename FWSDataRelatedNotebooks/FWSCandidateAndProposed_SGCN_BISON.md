@@ -134,7 +134,7 @@ grid::grid.draw(g)
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
 
 ## Breakdown of Occurrences in BISON by FWS Region of the SGCN Species + Candidate or Proposed for Listing Species
-# FWS Region 1 - Hawaii, Idaho, Oregon, Washington, American Samoa, Commonwealth of the Northern Mariana Islands, Guam and the Pacific Trust Territories
+### FWS Region 1 - Hawaii, Idaho, Oregon, Washington, American Samoa, Commonwealth of the Northern Mariana Islands, Guam and the Pacific Trust Territories
 
 
 ```r
@@ -169,7 +169,7 @@ FWSRegion1_CPlist_tab %>%
 |     Rhyacotriton kezeri     | Columbia Torrent Salamander |    738     | Under Review in the Candidate or Petition Process |
 |    Vulpes vulpes necator    |    Sierra Nevada Red Fox    |    273     |                     Candidate                     |
 
-# FWS Region 2 - Arizona, New Mexico, Oklahoma, and Texas
+### FWS Region 2 - Arizona, New Mexico, Oklahoma, and Texas
 
 
 ```r
@@ -260,7 +260,7 @@ FWSRegion2_CPlist_tab %>%
 |                    Uma                    |     Fringe-toed Lizards     |     74     | Under Review in the Candidate or Petition Process |
 |           Vermivora chrysoptera           |    Golden-winged Warbler    |   60040    | Under Review in the Candidate or Petition Process |
 
-# FWS Region 3 - Illinois, Indiana, Iowa, Ohio, Michigan, Minnesota, Missouri, and Wisconsin
+### FWS Region 3 - Illinois, Indiana, Iowa, Ohio, Michigan, Minnesota, Missouri, and Wisconsin
 
 
 ```r
@@ -309,7 +309,7 @@ FWSRegion3_CPlist_tab %>%
 |      Thamnophis sauritus       |     Eastern Ribbon Snake      |    3531    | Under Review in the Candidate or Petition Process |
 |     Vermivora chrysoptera      |     Golden-winged Warbler     |   60040    | Under Review in the Candidate or Petition Process |
 
-# FWS Region 4 - Alabama, Arkansas, Florida, Georgia, Kentucky, Louisiana, Mississippi, North Carolina, South Carolina, Tennessee, Puerto Rico, and the U.S. Virgin Islands
+### FWS Region 4 - Alabama, Arkansas, Florida, Georgia, Kentucky, Louisiana, Mississippi, North Carolina, South Carolina, Tennessee, Puerto Rico, and the U.S. Virgin Islands
 
 
 ```r
@@ -600,7 +600,7 @@ FWSRegion4_CPlist_tab %>%
 |          Villosa ortmanni           |              Kentucky creekshell              |    149     | Under Review in the Candidate or Petition Process |
 |         Waldsteinia lobata          |          piedmont barren strawberry           |     99     | Under Review in the Candidate or Petition Process |
 
-# FWS Region 5 - Connecticut, Delaware, District of Columbia, Maine, Maryland, Massachusetts, New Hampshire, New Jersey, New York, Pennsylvania, Rhode Island, Vermont, Virginia, and West Virginia
+### FWS Region 5 - Connecticut, Delaware, District of Columbia, Maine, Maryland, Massachusetts, New Hampshire, New Jersey, New York, Pennsylvania, Rhode Island, Vermont, Virginia, and West Virginia
 
 
 ```r
@@ -685,7 +685,7 @@ FWSRegion5_CPlist_tab %>%
 |         Typhlogastrura helleri         |     Heller Cave Springtail      |     0      | Under Review in the Candidate or Petition Process |
 |         Vermivora chrysoptera          |      Golden-winged Warbler      |   60040    | Under Review in the Candidate or Petition Process |
 
-# FWS Region 6 - Colorado, Kansas, Montana, Nebraska, North Dakota, South Dakota, Utah, and Wyoming
+### FWS Region 6 - Colorado, Kansas, Montana, Nebraska, North Dakota, South Dakota, Utah, and Wyoming
 
 
 ```r
@@ -725,7 +725,7 @@ FWSRegion6_CPlist_tab %>%
 |  Speyeria nokomis nokomis   | Great Basin silverspot butterfly |     23     | Under Review in the Candidate or Petition Process |
 | Tympanuchus pallidicinctus  |      Lesser Prairie-Chicken      |    2851    | Under Review in the Candidate or Petition Process |
 
-# FWS Region 7 - Alaska
+### FWS Region 7 - Alaska
 
 
 ```r
@@ -746,7 +746,7 @@ FWSRegion7_CPlist_tab %>%
 |   Fratercula cirrhata   | Tufted Puffin |   24084    | Under Review in the Candidate or Petition Process |
 | Spirinchus thaleichthys | longfin smelt |    1220    |                     Candidate                     |
 
-# FWS Region 8 - California and Nevada
+### FWS Region 8 - California and Nevada
 
 
 ```r
