@@ -134,7 +134,7 @@ g2 <- cbind(p1, p2, p3, size = "first")
 grid::grid.draw(g2)
 ```
 
-![plot of chunk unnamed-chunk-4](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/FWSDataRelatedNotebooks/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 ## Tables of SGCN + FWS National Working Plan species by proposed time frames
 SGCN also identified by FWS in their 7 Year Workplan for Fiscal Year 2017
@@ -400,8 +400,4 @@ fy23 %>%
 |       Alabama hickorynut        |    Obovaria unicolor     |              12M               |   R4   |      3      |    230     |
 |        salamander mussel        |   Simpsonaias ambigua    |              12M               |   R3   |      3      |    349     |
 |        little brown bat         |     Myotis lucifugus     | Discretionary Status or Review |   R3   |      4      |    8716    |
-
-```r
-#knitr::spin('C:/Users/albenson/Documents/SWAPs/DataAnalysis/FWSNationalListingWorkplan/FWS7YearWorkplan_SGCN_BISON.R')
-```
 
