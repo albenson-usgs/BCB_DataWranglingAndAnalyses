@@ -131,7 +131,7 @@ g <- cbind(p1, p2, p3, size = "first")
 grid::grid.draw(g)
 ```
 
-![plot of chunk unnamed-chunk-3](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/FWSDataRelatedNotebooks/CandPropOcc.png)
+![plot of chunk unnamed-chunk-3](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/FWSDataRelatedNotebooks/FWSCandPSummClassBISONOcc.png)
 
 ## Breakdown of Occurrences in BISON by FWS Region of the SGCN Species + Candidate or Proposed for Listing Species
 ### FWS Region 1 - Hawaii, Idaho, Oregon, Washington, American Samoa, Commonwealth of the Northern Mariana Islands, Guam and the Pacific Trust Territories
