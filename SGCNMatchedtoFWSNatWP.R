@@ -5,7 +5,7 @@ library(dplyr)
 library(kableExtra)
 
 # Pulls the SGCN National List from MongoDB
-bis_sgcnsynthesis2 <- mongo(collection = "xxxxxxxxxxxx", db = "xxxxxxxxxxx", url = "xxxxxxxxxxxxxxxxxxxx")
+bis_sgcnsynthesis2 <- mongo(collection = "xxxxxxxxx", db = "xxxxxxxxxxxxx", url = "xxxxxxxxxxxxxxxxx")
 mongo_sgcn2 <- bis_sgcnsynthesis2$find('{}', fields = '{"_id":1, "Common Name":1, "Taxonomic Group":1, "Match Method":1, "Taxonomy":1, "TESS":1, "NatureServe":1, "Source Data Summary":1}')
 mongo_sgcn2$`Scientific Name` <- mongo_sgcn2$`_id`
 mongo_sgcn2$CommonName <- mongo_sgcn2$`Common Name`
@@ -22,9 +22,6 @@ sgcn_fwsListingWP <- merge(Prelisting_Datcall_Species_List_FINAL_November_9, mon
 unmatchedFWSnames <- sgcn_fwsListingWP[which(is.na(sgcn_fwsListingWP$CommonName)),]
 unmatchedFWSnames <- unmatchedFWSnames[,-7]
 sgcn_fwsListingWP <- sgcn_fwsListingWP[which(!is.na(sgcn_fwsListingWP$ScientificName)),]
-
-# Able to find 138 "quick" matches. Meaning no extra work was done to the common name given in the FWS document to help match to SGCN common
-# names. This does however mean that we did not find matches for 223 of the names in the FWS document.
 
 # Merge with information we have in the SGCN Summary table for these species
 sgcn_fwsListingWP <- merge(Prelisting_Datcall_Species_List_FINAL_November_9, mongo_sgcn2, by = "Scientific Name")
