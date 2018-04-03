@@ -1,6 +1,6 @@
 #' BISON - SGCN Data Mashup Report for WSFR Region 3
 #' Abby Benson  
-#' March 20, 2018  
+#' April 3, 2018  
 
 
 # Data for this notebook was brought together and managed using the R script BISON_SGCN_Mashup_FWSRegion3.R
@@ -24,7 +24,7 @@ library(reshape2)
 library(plotly)
 
 #+ SGCN_number, include=FALSE
-#' ### Number of Species of Greatest Conservation Need in Fish and Wildlife Service Region 1:
+#' ### Number of Species of Greatest Conservation Need in Fish and Wildlife Service Region 3:
 nrow(FWSRegion3_list)
 
 #+ FWSListing_number, include=FALSE

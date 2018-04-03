@@ -1,6 +1,6 @@
 BISON - SGCN Data Mashup Report for WSFR Region 3
 Abby Benson  
-March 20, 2018  
+April 3, 2018  
 
 
 ```r
@@ -17,7 +17,7 @@ included in this analysis.
 
 
 
-### Number of Species of Greatest Conservation Need in Fish and Wildlife Service Region 1:
+### Number of Species of Greatest Conservation Need in Fish and Wildlife Service Region 3:
 
 
 ```r
@@ -44,20 +44,12 @@ nrow(FWSRegion3_list[which(FWSRegion3_list$ListingStatus == "Candidate" | FWSReg
 
 ```r
 lsp1 <- ggplot(ls_r1, aes(x=count, y=class)) + geom_point(shape=1)
-```
 
-```
-## Error in ggplot(ls_r1, aes(x = count, y = class)): object 'ls_r1' not found
-```
-
-```r
 # Divide by levels of FWS listing status, in the vertical direction
 lsp1 + facet_grid(ListingStatus ~ .)
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'lsp1' not found
-```
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
 
 
 ### BISON Occurrence Data Available for these SGCN grouped by the Class level of the taxonomic hierarchy
