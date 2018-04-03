@@ -71,7 +71,7 @@ p1 <- ggplot(r1, aes(x=class, y=Total)) +
        subtitle="FWS WSFR Region 3", 
        caption="") +  
   theme(axis.title.x = element_blank()) +
-  ylim(0,10000) +
+  ylim(0,100000) +
   coord_flip()
 p1 <- ggplotGrob(p1)
 
@@ -91,7 +91,7 @@ p2 <- ggplot(r1, aes(x=class, y=Total)) +
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x = element_blank()) +
-  ylim(10001,100000) +
+  ylim(100001,1000000) +
   coord_flip()
 p2 <- ggplotGrob(p2)
 
@@ -111,7 +111,7 @@ p3 <- ggplot(r1, aes(x=class, y=Total)) +
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x = element_blank()) +
-  ylim(100001,9300000) + 
+  ylim(1000001,61000000) + 
   coord_flip()
 p3 <- ggplotGrob(p3)
 
@@ -125,9 +125,8 @@ r1_gather <- gather(r1, key = "state", value = "occCount", -class)
 r1_gather <- r1_gather[which(r1_gather$state != "classtotal" & r1_gather$state != "Total"),]
 r1_1_gather <- r1_gather[which(r1_gather$class != "Aves (152)"),]
 r1_2_gather <- r1_gather[which(r1_gather$class == "Aves (152)"),]
+r1_1_gather$class <- factor(r1_1_gather$class, levels = r1_1_gather$class[order(r1$Total)])
 g1 <- ggplot(r1_1_gather, aes(class, occCount))
 g1 + geom_bar(aes(fill = state), position = position_stack(reverse = TRUE), stat = "identity") +
   coord_flip() +
-  theme(legend.position = "top") + ylim(0,100000) #doesn't show Aves
-
-#knitr::spin('C:/Users/albenson/Documents/SWAPs/DataAnalysis/BISON_SGCN_Mashup/BISON_SGCN_Mashup_Notebook_FWSR3.R')
+  theme(legend.position = "top") + ylim(0,115000) #doesn't show Aves
