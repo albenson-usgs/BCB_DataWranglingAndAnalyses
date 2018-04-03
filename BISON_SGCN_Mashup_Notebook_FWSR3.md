@@ -44,12 +44,20 @@ nrow(FWSRegion3_list[which(FWSRegion3_list$ListingStatus == "Candidate" | FWSReg
 
 ```r
 lsp1 <- ggplot(ls_r1, aes(x=count, y=class)) + geom_point(shape=1)
+```
 
+```
+## Error in ggplot(ls_r1, aes(x = count, y = class)): object 'ls_r1' not found
+```
+
+```r
 # Divide by levels of FWS listing status, in the vertical direction
 lsp1 + facet_grid(ListingStatus ~ .)
 ```
 
-![plot of chunk unnamed-chunk-3](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion3-FWSClassifications.png)
+```
+## Error in eval(expr, envir, enclos): object 'lsp1' not found
+```
 
 
 ### BISON Occurrence Data Available for these SGCN grouped by the Class level of the taxonomic hierarchy
@@ -64,7 +72,7 @@ op1 + geom_bar(aes(fill = type), position = position_stack(reverse = TRUE), stat
   theme(legend.position = "top") 
 ```
 
-![plot of chunk unnamed-chunk-4](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion3-BISONOccTypeWBirds.png)
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 Therefore we take birds out and see what is available for the rest of the classes.
 
@@ -77,7 +85,7 @@ op2 + geom_bar(aes(fill = type), position = position_stack(reverse = TRUE), stat
   theme(legend.position = "top") 
 ```
 
-![plot of chunk unnamed-chunk-5](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion3-BISONOccTypeWOBirds.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 Next we'll see how this breaks down for the region of interest- FWS WSFR Region 3
 
@@ -96,15 +104,15 @@ p1 <- ggplot(r1, aes(x=class, y=Total)) +
        subtitle="FWS WSFR Region 3", 
        caption="") +  
   theme(axis.title.x = element_blank()) +
-  ylim(0,10000) +
+  ylim(0,100000) +
   coord_flip()
 p1 <- ggplotGrob(p1)
 ```
 
 ```
-## Warning: Removed 5 rows containing missing values (geom_point).
+## Warning: Removed 2 rows containing missing values (geom_point).
 
-## Warning: Removed 5 rows containing missing values (geom_point).
+## Warning: Removed 2 rows containing missing values (geom_point).
 ```
 
 ```
@@ -128,17 +136,17 @@ p2 <- ggplot(r1, aes(x=class, y=Total)) +
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x = element_blank()) +
-  ylim(10001,100000) +
+  ylim(100001,1000000) +
   coord_flip()
 p2 <- ggplotGrob(p2)
 ```
 
 ```
-## Warning: Removed 18 rows containing missing values (geom_point).
+## Warning: Removed 21 rows containing missing values (geom_point).
 ```
 
 ```
-## Warning: Removed 18 rows containing missing values (geom_point).
+## Warning: Removed 21 rows containing missing values (geom_point).
 ```
 
 ```
@@ -162,7 +170,7 @@ p3 <- ggplot(r1, aes(x=class, y=Total)) +
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x = element_blank()) +
-  ylim(100001,9300000) + 
+  ylim(1000001,61000000) + 
   coord_flip()
 p3 <- ggplotGrob(p3)
 ```
@@ -185,7 +193,7 @@ g <- cbind(p1, p2, p3, size = "first")
 grid::grid.draw(g)
 ```
 
-![plot of chunk unnamed-chunk-6](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion3-BISONOccDotPlot.png)
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
 
 
 Stack bar chart showing the proportion of records that are in each state by class
@@ -196,11 +204,28 @@ r1_gather <- gather(r1, key = "state", value = "occCount", -class)
 r1_gather <- r1_gather[which(r1_gather$state != "classtotal" & r1_gather$state != "Total"),]
 r1_1_gather <- r1_gather[which(r1_gather$class != "Aves (152)"),]
 r1_2_gather <- r1_gather[which(r1_gather$class == "Aves (152)"),]
+r1_1_gather$class <- factor(r1_1_gather$class, levels = r1_1_gather$class[order(r1$Total)])
+```
+
+```
+## Warning in `levels<-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated
+```
+
+```r
 g1 <- ggplot(r1_1_gather, aes(class, occCount))
 g1 + geom_bar(aes(fill = state), position = position_stack(reverse = TRUE), stat = "identity") +
   coord_flip() +
-  theme(legend.position = "top") + ylim(0,100000) #doesn't show Aves
+  theme(legend.position = "top") + ylim(0,115000) #doesn't show Aves
 ```
 
-![plot of chunk unnamed-chunk-7](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/BISON-SGCN-FWSRegion3-ClassStateBarChart.png)
+```
+## Warning in `levels<-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated
+
+## Warning in `levels<-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated
+```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
 
