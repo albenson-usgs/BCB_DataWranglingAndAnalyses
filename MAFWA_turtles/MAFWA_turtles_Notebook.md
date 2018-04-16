@@ -133,7 +133,7 @@ bisonTurtleData$decimalLatitude <- as.numeric(bisonTurtleData$decimalLatitude)
 bisonTurtleData$decimalLongitude <- as.numeric(bisonTurtleData$decimalLongitude)
 plot_map_leaflet(bisonTurtleData)
 ```
-
+![plot of chunk unnamed-chunk-6](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/MAFWA_turtles/MAFWA_turtles_Notebook_map.png)
 ```
 ## Error in loadNamespace(name): there is no package called 'webshot'
 ```
@@ -149,5 +149,5 @@ ds_plot + geom_bar(aes(fill = dataSource), position = position_stack(reverse = T
   guides(fill = F)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+![plot of chunk unnamed-chunk-7](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/MAFWA_turtles/MAFWA_turtles_Notebook_dataSources.png)
 
