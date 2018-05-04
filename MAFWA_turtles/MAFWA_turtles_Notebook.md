@@ -156,7 +156,7 @@ bisonWoodTurtles <- bisonTurtleData[which(bisonTurtleData$ScientificName == "Gly
 ```r
 plot_map_leaflet(bisonBlandingsTurtles)
 ```
-
+![plot of chunk unnamed-chunk-1](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/MAFWA_turtles/MAFWA_turtles_BlandingsTurtleMap.png)
 ```
 ## Error in loadNamespace(name): there is no package called 'webshot'
 ```
@@ -167,7 +167,7 @@ plot_map_leaflet(bisonBlandingsTurtles)
 ```r
 plot_map_leaflet(bisonSpottedTurtles)
 ```
-
+![plot of chunk unnamed-chunk-2](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/MAFWA_turtles/MAFWA_turtles_SpottedTurtleMap.png)
 ```
 ## Error in loadNamespace(name): there is no package called 'webshot'
 ```
@@ -178,7 +178,7 @@ plot_map_leaflet(bisonSpottedTurtles)
 ```r
 plot_map_leaflet(bisonWoodTurtles)
 ```
-
+![plot of chunk unnamed-chunk-3](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/MAFWA_turtles/MAFWA_turtles_WoodTurtleMap.png)
 ```
 ## Error in loadNamespace(name): there is no package called 'webshot'
 ```
@@ -194,7 +194,7 @@ ds_plot + geom_bar(aes(fill = dataSource), position = position_stack(reverse = T
   guides(fill = F)
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
+![plot of chunk unnamed-chunk-10](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/MAFWA_turtles/MAFWA_turtles_Notebook_dataSources.png)
 
 Limit the previous figure to only the occurrences from the last 20 years
 
@@ -208,5 +208,5 @@ ds2_plot + geom_bar(aes(fill = dataSource), position = position_stack(reverse = 
   guides(fill = F)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-11](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/MAFWA_turtles/MAFWA_turtles_Notebook_dataSources_recent20yrs.png)
 
