@@ -4,6 +4,16 @@ library(stringr)
 library(plyr)
 library(taxize)
 
+# Need BuildGC2Tables.R in the DataChecking R Project to be run first
+# The sgcn_search table should give us the information we need just need to limit it to SEAFWA
+
+seafwa <- c("Florida", "Georgia", "South Carolina", "North Carolina", "Kentucky", "Tennessee", "Alabama", "Mississippi",  "Arkansas", 
+            "Louisiana", "Virginia", "West Virginia", "Missouri", "Oklahoma", "Texas")
+seafwa_natlist <- sgcn_search[grep(paste(seafwa,collapse = "|"),sgcn_search$statelist_2015),]
+seafwa_natlist_wFWSListingStatus <- seafwa_natlist[which(!is.na(seafwa_natlist$ListingStatus)),]
+write.csv(seafwa_natlist_wFWSListingStatus, file = "seafwa_reglist_wFWSListStat.csv", fileEncoding = "UTF-8", row.names = F)
+
+#_________________ Old Method using GC2 below__________________
 nl <- fromJSON("https://gc2.datadistillery.org/api/v1/sql/bcb?q=SELECT%20*%20FROM%20sgcn.sgcn_nationallist")
 nl_data <- as_tibble(nl$features$properties)
 
@@ -231,7 +241,6 @@ subset <- nl_fws_itis_worms_2015[which(nl_fws_itis_worms_2015$kingdom == "Planta
 subset <- subset[c("statelist_2015")]
 subset <- unlist(strsplit(subset$statelist_2015, split = ","))
 unique(subset)
-
 
 
 
