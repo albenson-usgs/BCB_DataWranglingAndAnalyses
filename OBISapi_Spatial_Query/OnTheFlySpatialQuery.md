@@ -53,5 +53,5 @@ Finally we'll create a visualization of the data
 ggplot(data = OBIS_stats_long, aes(x=year, y=count)) + geom_line(aes(colour=count_type))
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+![plot of chunk unnamed-chunk-3](https://github.com/albenson-usgs/BCB_DataWranglingAndAnalyses/blob/master/OBISapi_Spatial_Query/Rplot.png)
 
