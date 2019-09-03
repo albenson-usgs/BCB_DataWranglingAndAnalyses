@@ -1,10 +1,9 @@
 # Abby's version of the National Fishes Vulnerability Assessment "PRISM data extraction from buffers_11_13_2018.R" and
 # "Post extraction PRISM processing_pointbuffers_11_13_2018.R"
 # Abby Benson
-# 2019-07-03
+# 2019-08-26
 
 library(prism)
-library(zoo)
 library(tidyverse)
 
 options(prism.path = "~/prismtmp")
@@ -20,105 +19,116 @@ get_prism_monthlys(type = "tmin", year = 1895:2014, mon = 1, keepZip = FALSE)
 # needs to be run on a high performance computing cluster like USGS Yeti
 
 ###### Run PRISM_variable_yeti.R on a HPC - each variable has its own R script #####
-
+# Couldn't figure out how to make a for loop to make this work so repetition it is!
 # Import RDS file from the Yeti HPC procedure
-# Apply a 30 year rolling window to all four buffer sizes for the maximum annual temperature PRISM variable
-# Since the variable is maximum temp we use the max function in the rolling window.
+# RDSfiles <- list.files(path = ".", pattern = ".rds", full.names = F)
+# RDSfiles <- RDSfiles[2:6] #remove the spatial points rds file used as an input to HPC work and isn't an output
+# 
+# 
+# for (f in length(RDSfiles)){
+#   var_buffer <- readRDS(RDSfiles[f])
+#   for (v in length(var_buffer)){
+#     var_1km <- as.data.frame(var_buffer[1])
+#     var_5km <- as.data.frame(var_buffer[2])
+#     var_10km <- as.data.frame(var_buffer[3])
+#     var_20km <- as.data.frame(var_buffer[4])
+#   }
+# }
 tmax_Buffer <- readRDS("tmax_buffers.rds")
-tmax_1kmBuffer <- tmax_Buffer[[1]]
-tmax_1kmBuffer <- as.data.frame(tmax_1kmBuffer)
-tmax_1kmBuffer <- tmax_1kmBuffer[c(5,11,15:134)]
-zoo_tmax_1kmbuffer <- zoo(tmax_1kmBuffer[c(5,15:134)], order.by = tmax_1kmBuffer$eventDate)
-#occ_data <- tmax_1kmBuffer[c(1:14)]
-#rownames(tmax_1kmBuffer) <- tmax_1kmBuffer$occurrenceID
-RW_tmax_1kmbuffer <- as.data.frame(rollapply(tmax_1kmBuffer_gather[c(4)], width = 30, by = 1, FUN = max))
+tmax_1km <- as.data.frame(tmax_Buffer[[1]])
+tmax_1km$year <- substr(tmax_1km$eventDate, start = 1, stop = 4)
+tmax_1km$year <- paste0("_", tmax_1km$year)
+tmax_1km_final <- tmax_1km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
 
+tmax_10km <- as.data.frame(tmax_Buffer[[3]])
+tmax_10km$year <- substr(tmax_10km$eventDate, start = 1, stop = 4)
+tmax_10km$year <- paste0("_", tmax_10km$year)
+tmax_10km_final <- tmax_10km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
 
-
-tmax_5kmBuffer <- as.data.frame(tmax_Buffer[[2]])
-RW_tmax_5kmbuffer <- as.data.frame(rollapply(tmax_5kmBuffer, width = 30, by = 1, FUN = max, na.rm = TRUE))
-tmax_10kmBuffer <- as.data.frame(tmax_Buffer[[3]])
-RW_tmax_10kmbuffer <- as.data.frame(rollapply(tmax_10kmBuffer, width = 30, by = 1, FUN = max, na.rm = TRUE))
-tmax_20kmBuffer <- as.data.frame(tmax_Buffer[[4]])
-RW_tmax_20kmbuffer <- as.data.frame(rollapply(tmax_20kmBuffer, width = 30, by = 1, FUN = max, na.rm = TRUE))
-
-# Apply a 30 year rolling window to all four buffer sizes for the maximum August temperature PRISM variable
-# Since the variable is maximum temp in August we use the max function in the rolling window.
 tmaxAug_Buffer <- readRDS("tmaxAug_buffers.rds")
-tmaxAug_1kmBuffer <- as.data.frame(tmaxAug_Buffer[[1]])
-RW_tmaxAug_1kmbuffer <- as.data.frame(rollapply(tmaxAug_1kmBuffer, width = 30, by = 1, FUN = max, na.rm = TRUE))
-tmaxAug_5kmBuffer <- as.data.frame(tmaxAug_Buffer[[2]])
-RW_tmaxAug_5kmbuffer <- as.data.frame(rollapply(tmaxAug_5kmBuffer, width = 30, by = 1, FUN = max, na.rm = TRUE))
-tmaxAug_10kmBuffer <- as.data.frame(tmaxAug_Buffer[[3]])
-RW_tmaxAug_10kmbuffer <- as.data.frame(rollapply(tmaxAug_10kmBuffer, width = 30, by = 1, FUN = max, na.rm = TRUE))
-tmaxAug_20kmBuffer <- as.data.frame(tmaxAug_Buffer[[4]])
-RW_tmaxAug_20kmbuffer <- as.data.frame(rollapply(tmaxAug_20kmBuffer, width = 30, by = 1, FUN = max, na.rm = TRUE))
+tmaxAug_1km <- as.data.frame(tmaxAug_Buffer[[1]])
+tmaxAug_1km$year <- substr(tmaxAug_1km$eventDate, start = 1, stop = 4)
+tmaxAug_1km$year <- paste0("_", tmaxAug_1km$year)
+tmaxAug_1km_final <- tmaxAug_1km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
 
-# Apply a 30 year rolling window to all four buffer sizes for the annual precipitation PRISM variable
-# For this rolling window we chose to use the min function as we thought minimum precipitation would 
-# have a greater affect for fish than max.
+tmaxAug_10km <- as.data.frame(tmaxAug_Buffer[[3]])
+tmaxAug_10km$year <- substr(tmaxAug_10km$eventDate, start = 1, stop = 4)
+tmaxAug_10km$year <- paste0("_", tmaxAug_10km$year)
+tmaxAug_10km_final <- tmaxAug_10km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
+
 ppt_Buffer <- readRDS("ppt_buffers.rds")
-ppt_1kmBuffer <- as.data.frame(ppt_Buffer[[1]])
-RW_ppt_1kmbuffer <- as.data.frame(rollapply(ppt_1kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-ppt_5kmBuffer <- as.data.frame(ppt_Buffer[[2]])
-RW_ppt_5kmbuffer <- as.data.frame(rollapply(ppt_5kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-ppt_10kmBuffer <- as.data.frame(ppt_Buffer[[3]])
-RW_ppt_10kmbuffer <- as.data.frame(rollapply(ppt_10kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-ppt_20kmBuffer <- as.data.frame(ppt_Buffer[[4]])
-RW_ppt_20kmbuffer <- as.data.frame(rollapply(ppt_20kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
+ppt_1km <- as.data.frame(ppt_Buffer[[1]])
+ppt_1km$year <- substr(ppt_1km$eventDate, start = 1, stop = 4)
+ppt_1km$year <- paste0("_", ppt_1km$year)
+ppt_1km_final <- ppt_1km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
 
-# Apply a 30 year rolling window to all four buffer sizes for the minimum annual temperature PRISM variable
-# Since the variable is minimum temperature we chose the min function for the rolling window.
+ppt_10km <- as.data.frame(ppt_Buffer[[3]])
+ppt_10km$year <- substr(ppt_10km$eventDate, start = 1, stop = 4)
+ppt_10km$year <- paste0("_", ppt_10km$year)
+ppt_10km_final <- ppt_10km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
+
 tmin_Buffer <- readRDS("tmin_buffers.rds")
-tmin_1kmBuffer <- as.data.frame(tmin_Buffer[[1]])
-RW_tmin_1kmbuffer <- as.data.frame(rollapply(tmin_1kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-tmin_5kmBuffer <- as.data.frame(tmin_Buffer[[2]])
-RW_tmin_5kmbuffer <- as.data.frame(rollapply(tmin_5kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-tmin_10kmBuffer <- as.data.frame(tmin_Buffer[[3]])
-RW_tmin_10kmbuffer <- as.data.frame(rollapply(tmin_10kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-tmin_20kmBuffer <- as.data.frame(tmin_Buffer[[4]])
-RW_tmin_20kmbuffer <- as.data.frame(rollapply(tmin_20kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
+tmin_1km <- as.data.frame(tmin_Buffer[[1]])
+tmin_1km$year <- substr(tmin_1km$eventDate, start = 1, stop = 4)
+tmin_1km$year <- paste0("_", tmin_1km$year)
+tmin_1km_final <- tmin_1km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
 
-# Apply a 30 year rolling window to all four buffer sizes for the minimum annual temperature in January 
-# PRISM variable. Since the variable is minimum January temperature we chose the min function for the 
-# rolling window.
+tmin_10km <- as.data.frame(tmin_Buffer[[3]])
+tmin_10km$year <- substr(tmin_10km$eventDate, start = 1, stop = 4)
+tmin_10km$year <- paste0("_", tmin_10km$year)
+tmin_10km_final <- tmin_10km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
+
 tminJan_Buffer <- readRDS("tminJan_buffers.rds")
-tminJan_1kmBuffer <- as.data.frame(tminJan_Buffer[[1]])
-RW_tminJan_1kmbuffer <- as.data.frame(rollapply(tminJan_1kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-tminJan_5kmBuffer <- as.data.frame(tminJan_Buffer[[2]])
-RW_tminJan_5kmbuffer <- as.data.frame(rollapply(tminJan_5kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-tminJan_10kmBuffer <- as.data.frame(tminJan_Buffer[[3]])
-RW_tminJan_10kmbuffer <- as.data.frame(rollapply(tminJan_10kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
-tminJan_20kmBuffer <- as.data.frame(tminJan_Buffer[[4]])
-RW_tminJan_20kmbuffer <- as.data.frame(rollapply(tminJan_20kmBuffer, width = 30, by = 1, FUN = min, na.rm = TRUE))
+tminJan_1km <- as.data.frame(tminJan_Buffer[[1]])
+tminJan_1km$year <- substr(tminJan_1km$eventDate, start = 1, stop = 4)
+tminJan_1km$year <- paste0("_", tminJan_1km$year)
+tminJan_1km_final <- tminJan_1km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
 
-#### Next up figure out how to limit to the years which match with eventDate
-# First let's see if we can limit for one dataframe
-# Grab the year of data for each occurrence
-finalpoints_sp$year <- substr(finalpoints_sp$eventDate, start = 1, stop = 4)
-finalpoints_sp$year <- paste0("_", finalpoints_sp$year)
-
-data_years <- unique(finalpoints_sp$year)
-PRISM_data_list = do.call("list", mget(grep("RW", ls(), value=T)))
-
-datalist <- list()
-set <- list()
-for (d in 1:length(PRISM_data_list)){
-  for (i in data_years){
-    dat <- PRISM_data_list[[d]][grepl(i, colnames(PRISM_data_list[[d]]))]
-    if (ncol(dat) > 0){
-      datalist[[i]] <- dat
-    }
-  }
-  df <- do.call(cbind,datalist)
-  PRISM_data_list[d] <- list(df)
-}
-
-# Now we need to limit to only the data point for the year for the occurrence (instead of PRISM data for
-# every occurrence for every year)
-final_species_PRISM_data <- as.data.frame(finalpoints_sp[c("occurrenceID", "scientificName", "eventDate", "year")])
-final_species_PRISM_data <- final_species_PRISM_data[which(!is.na(final_species_PRISM_data$eventDate)),]
-final_species_PRISM_data$ppt <- ifelse(final_species_PRISM_data$year %in% colnames(PRISM_data_list$RW_ppt_10kmbuffer)) 
-
+tminJan_10km <- as.data.frame(tminJan_Buffer[[3]])
+tminJan_10km$year <- substr(tminJan_10km$eventDate, start = 1, stop = 4)
+tminJan_10km$year <- paste0("_", tminJan_10km$year)
+tminJan_10km_final <- tminJan_10km %>%
+  gather(key = "prism_name", value = "value", 15:134) %>%
+  rowwise() %>%
+  filter(grepl(pattern = year, x = prism_name))
 
 #### Now we need to calculate standard deviation
+st_dev <- as.data.frame(tmin_10km_final[1,]$scientificName)
+st_dev$tmax_1km <- sd(tmax_1km_final$value)
+st_dev$tmax_10km <- sd(tmax_10km_final$value)
+st_dev$ppt_1km <- sd(ppt_1km_final$value)
+st_dev$ppt_10km <- sd(ppt_10km_final$value)
+st_dev$tmaxAug_1km <- sd(tmaxAug_1km_final$value)
+st_dev$tmaxAug_10km <- sd(tmaxAug_10km_final$value)
+st_dev$tmin_1km <- sd(tmin_1km_final$value)
+st_dev$tmin_10km <- sd(tmin_10km_final$value)
+st_dev$tminJan_1km <- sd(tminJan_1km_final$value)
+st_dev$tminJan_10km <- sd(tminJan_10km_final$value)
+
