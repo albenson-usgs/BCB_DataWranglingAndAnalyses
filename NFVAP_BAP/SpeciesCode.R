@@ -63,7 +63,7 @@ SpeciesList <- read_csv("~/BCB/MultipleSpeciesVulnerabilityNA/NFVAP_BAP/SpeciesS
 # -95.05371 49.49667, -95.36133 49.00905, -106.87500 49.06667, -115.22461 49.03787, -122.69531 48.95137, -123.31055 48.22467, 
 # -125.15625 48.48749)))
 
-for (i in 41:nrow(SpeciesList)){
+for (i in 1:nrow(SpeciesList)){
 # Using the scientificName as the search parameter means we'll get back any records for synonyms (ex: searching "Ameiurus 
 # serracanthus" brings back records for that as well as "Ictalurus serracanthus")
 GBIFSpecies <- occ_search(scientificName = SpeciesList[i,]$SciName, hasCoordinate = T, geometry = "POLYGON ((-125.15625 48.48749, 
