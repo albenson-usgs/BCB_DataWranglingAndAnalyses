@@ -47,6 +47,8 @@ event$minimumDepthInMeters <- event$depth
 event$maximumDepthInMeters <- event$depth
 event$habitat <- event$`bottom type`
 event$island <- event$region
+
+#' Let's see how it looks:
 head(event, n = 10)
 
 #' We need to convert the date to ISO format
@@ -70,16 +72,19 @@ event$`bottom type` <- NULL
 #' is a unique identifier for each sampling event in the data- which is six, three transects
 #' per site.
 event <- event[which(!duplicated(event$eventID)),]
+
 head(event, n = 6)
 
 #' Finally we write out the event file
 write.csv(event, file="MadeUpData_event.csv", row.names=FALSE, fileEncoding="UTF-8", quote=TRUE)
 
-#' Next we need to create the occurrence file.
+#' Next we need to create the occurrence file. We start by creating the dataframe.
 occurrence <- MadeUpDataForBiologicalDataTraining[c("scientific name", "eventID", "occurrenceID", "percent cover")] 
 
+#' Then we'll rename the columns that align directly with Darwin Core.
 occurrence$scientificName <- occurrence$`scientific name`
 
+#' Finally we'll add required information that's missing.
 occurrence$occurrenceStatus <-  ifelse (occurrence$`percent cover` == 0, "absent", "present")
 
 #' ## Taxonomic Name Matching
@@ -94,6 +99,8 @@ lut_worms <- as.data.frame(unique(occurrence_only$scientificName))
 lut_worms$scientificName <- as.character(lut_worms$`unique(occurrence_only$scientificName)`)
 lut_worms$`unique(occurrence_only$scientificName)` <- NULL
 lut_worms$scientificName <- as.character(lut_worms$scientificName)
+
+#' Add the columns that we can grab information from WoRMS including the required scientificNameID.
 lut_worms$acceptedname <- ""
 lut_worms$acceptedID <- ""
 lut_worms$scientificNameID <- ""
@@ -123,24 +130,30 @@ for (i in 1:nrow(lut_worms)){
   message(paste("Looking up information for species:", lut_worms[i,]$scientificName))
 }
 
+#' Merge the lookup table of unique scientific names back with the occurrence data.
 occurrence <- merge(occurrence, lut_worms, by = "scientificName")
 
 #' We're going to remove any unnecessary columns to clean up the file
-
 occurrence$`scientific name` <- NULL
 occurrence$`percent cover` <- NULL
 
+#' Quick look at what we have before we write out the file
+head(occurrence, n = 10)
 
+#' Write out the file. All done with occurrence!
 write.csv(occurrence, file="MadeUpData_Occurrence.csv", row.names=FALSE, fileEncoding="UTF-8", quote=TRUE)
 
-#' The last file we need to create is the measurement or fact file
+#' The last file we need to create is the measurement or fact file. For this we need to 
+#' combine all of the measurements or facts that we want to include making sure to include
+#' IDs from the BODC NERC vocabulary where possible.
 temperature <- MadeUpDataForBiologicalDataTraining[c("eventID", "temperature", "date")]
 temperature$occurrenceID <- ""
 temperature$measurementType <- "temperature"
-temperature$measurementTypeID <- ""
+temperature$measurementTypeID <- "http://vocab.nerc.ac.uk/collection/P25/current/WTEMP/"
 temperature$measurementValue <- temperature$temperature
 temperature$measurementUnit <- "Celsius"
-temperature$measurementUnitID <- ""
+temperature$measurementUnitID <- "http://vocab.nerc.ac.uk/collection/P06/current/UPAA/"
+temperature$measurementAccuracy <- 3
 temperature$measurementDeterminedDate <- as.Date(temperature$date, format = "%m/%d/%Y")
 temperature$measurementMethod <- ""
 temperature$temperature <- NULL
@@ -152,21 +165,25 @@ rugosity$measurementTypeID <- ""
 rugosity$measurementValue <- rugosity$rugosity
 rugosity$measurementUnit <- ""
 rugosity$measurementUnitID <- ""
+rugosity$measuremntAccuracy <- ""
 rugosity$measurementDeterminedDate <- as.Date(rugosity$date, format = "%m/%d/%Y")
 rugosity$measurementMethod <- ""
 rugosity$rugosity <- NULL
 rugosity$date <- NULL
-percentcover <- MadeUpDataForBiologicalDataTraining[c("eventID", "occurrenceID", "percent cover",
-                                                      "date")]
+percentcover <- MadeUpDataForBiologicalDataTraining[c("eventID", "occurrenceID", "percent cover", "date")]
 percentcover$measurementType <- "Percent Cover"
-percentcover$measurementTypeID <- ""
+percentcover$measurementTypeID <- "http://vocab.nerc.ac.uk/collection/P01/current/SDBIOL10/"
 percentcover$measurementValue <- percentcover$`percent cover`
-percentcover$measurementUnit <- ""
+percentcover$measurementUnit <- "Percent/100m^2"
 percentcover$measurementUnitID <- ""
+percentcover$measuremntAccuracy <- 5
 percentcover$measurementDeterminedDate <- as.Date(percentcover$date, format = "%m/%d/%Y")
 percentcover$measurementMethod <- ""
 percentcover$`percent cover` <- NULL
 percentcover$date <- NULL
 measurementOrFact <- rbind(temperature, rugosity, percentcover)
+
+#' Let's check to see what it looks like
+head(measurementOrFact, n = 50)
 
 write.csv(measurementOrFact, file="MadeUpData_mof.csv", row.names=FALSE, fileEncoding="UTF-8", quote=TRUE)
