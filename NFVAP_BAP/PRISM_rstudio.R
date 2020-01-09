@@ -19,116 +19,36 @@ get_prism_monthlys(type = "tmin", year = 1895:2014, mon = 1, keepZip = FALSE)
 # needs to be run on a high performance computing cluster like USGS Yeti
 
 ###### Run PRISM_variable_yeti.R on a HPC - each variable has its own R script #####
-# Couldn't figure out how to make a for loop to make this work so repetition it is!
-# Import RDS file from the Yeti HPC procedure
-# RDSfiles <- list.files(path = ".", pattern = ".rds", full.names = F)
-# RDSfiles <- RDSfiles[2:6] #remove the spatial points rds file used as an input to HPC work and isn't an output
-# 
-# 
-# for (f in length(RDSfiles)){
-#   var_buffer <- readRDS(RDSfiles[f])
-#   for (v in length(var_buffer)){
-#     var_1km <- as.data.frame(var_buffer[1])
-#     var_5km <- as.data.frame(var_buffer[2])
-#     var_10km <- as.data.frame(var_buffer[3])
-#     var_20km <- as.data.frame(var_buffer[4])
-#   }
-# }
-tmax_Buffer <- readRDS("tmax_buffers.rds")
-tmax_1km <- as.data.frame(tmax_Buffer[[1]])
-tmax_1km$year <- substr(tmax_1km$eventDate, start = 1, stop = 4)
-tmax_1km$year <- paste0("_", tmax_1km$year)
-tmax_1km_final <- tmax_1km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
 
-tmax_10km <- as.data.frame(tmax_Buffer[[3]])
-tmax_10km$year <- substr(tmax_10km$eventDate, start = 1, stop = 4)
-tmax_10km$year <- paste0("_", tmax_10km$year)
-tmax_10km_final <- tmax_10km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
+# Wrap cleaning lines into a function to reuse
+clean_dataset <- function(df) {
+  df <- as.data.frame(df)
+  df$year <- substr(df$eventDate, start = 1, stop = 4)
+  df$year <- paste0("_", df$year)
+  df_final <- df %>%
+    gather(key = "prism_name", value = "value", 15:134) %>%
+    rowwise() %>%
+    filter(grepl(pattern = year, x = prism_name))
+  return(df_final)
+}
 
-tmaxAug_Buffer <- readRDS("tmaxAug_buffers.rds")
-tmaxAug_1km <- as.data.frame(tmaxAug_Buffer[[1]])
-tmaxAug_1km$year <- substr(tmaxAug_1km$eventDate, start = 1, stop = 4)
-tmaxAug_1km$year <- paste0("_", tmaxAug_1km$year)
-tmaxAug_1km_final <- tmaxAug_1km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
+# Read in .rds files from yeti output and limit the data to only the instances
+# where a point occurs in a particular year, eliminating data that do no follow that rule
+PATH_YetiResults <- "~/BCB/MultipleSpeciesVulnerabilityNA/NFVAP_BAP/yeti_results"
+filenames <- list.files(path = PATH_YetiResults, full.names = T)
+ldf <- lapply(filenames, readRDS)
+res <- lapply(ldf, clean_dataset)
 
-tmaxAug_10km <- as.data.frame(tmaxAug_Buffer[[3]])
-tmaxAug_10km$year <- substr(tmaxAug_10km$eventDate, start = 1, stop = 4)
-tmaxAug_10km$year <- paste0("_", tmaxAug_10km$year)
-tmaxAug_10km_final <- tmaxAug_10km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
 
-ppt_Buffer <- readRDS("ppt_buffers.rds")
-ppt_1km <- as.data.frame(ppt_Buffer[[1]])
-ppt_1km$year <- substr(ppt_1km$eventDate, start = 1, stop = 4)
-ppt_1km$year <- paste0("_", ppt_1km$year)
-ppt_1km_final <- ppt_1km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
+# Now we need to calculate standard deviation on the values for each species and climate
+# variable combinations
+stdev <- lapply(res[[i]]$value, sd)
+stdev <- c()
+for (i in 1:length(res)){
+  stdev[[i]] <- sd(res[[i]]$value, na.rm = T)# unsure why there are some NAs, not all sp-clim_var have them
+  stdev <- list.append(stdev, res[[i]]$name[1])
+  stdev <- list.append(stdev, res[[i]]$prism_name[1])
+} #need to add in sp and clim_var to list somehow
 
-ppt_10km <- as.data.frame(ppt_Buffer[[3]])
-ppt_10km$year <- substr(ppt_10km$eventDate, start = 1, stop = 4)
-ppt_10km$year <- paste0("_", ppt_10km$year)
-ppt_10km_final <- ppt_10km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
 
-tmin_Buffer <- readRDS("tmin_buffers.rds")
-tmin_1km <- as.data.frame(tmin_Buffer[[1]])
-tmin_1km$year <- substr(tmin_1km$eventDate, start = 1, stop = 4)
-tmin_1km$year <- paste0("_", tmin_1km$year)
-tmin_1km_final <- tmin_1km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
-
-tmin_10km <- as.data.frame(tmin_Buffer[[3]])
-tmin_10km$year <- substr(tmin_10km$eventDate, start = 1, stop = 4)
-tmin_10km$year <- paste0("_", tmin_10km$year)
-tmin_10km_final <- tmin_10km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
-
-tminJan_Buffer <- readRDS("tminJan_buffers.rds")
-tminJan_1km <- as.data.frame(tminJan_Buffer[[1]])
-tminJan_1km$year <- substr(tminJan_1km$eventDate, start = 1, stop = 4)
-tminJan_1km$year <- paste0("_", tminJan_1km$year)
-tminJan_1km_final <- tminJan_1km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
-
-tminJan_10km <- as.data.frame(tminJan_Buffer[[3]])
-tminJan_10km$year <- substr(tminJan_10km$eventDate, start = 1, stop = 4)
-tminJan_10km$year <- paste0("_", tminJan_10km$year)
-tminJan_10km_final <- tminJan_10km %>%
-  gather(key = "prism_name", value = "value", 15:134) %>%
-  rowwise() %>%
-  filter(grepl(pattern = year, x = prism_name))
-
-#### Now we need to calculate standard deviation
-st_dev <- as.data.frame(tmin_10km_final[1,]$scientificName)
-st_dev$tmax_1km <- sd(tmax_1km_final$value)
-st_dev$tmax_10km <- sd(tmax_10km_final$value)
-st_dev$ppt_1km <- sd(ppt_1km_final$value)
-st_dev$ppt_10km <- sd(ppt_10km_final$value)
-st_dev$tmaxAug_1km <- sd(tmaxAug_1km_final$value)
-st_dev$tmaxAug_10km <- sd(tmaxAug_10km_final$value)
-st_dev$tmin_1km <- sd(tmin_1km_final$value)
-st_dev$tmin_10km <- sd(tmin_10km_final$value)
-st_dev$tminJan_1km <- sd(tminJan_1km_final$value)
-st_dev$tminJan_10km <- sd(tminJan_10km_final$value)
 
